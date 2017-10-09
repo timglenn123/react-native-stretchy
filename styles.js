@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from "react-native";
 
 export default StyleSheet.create({
   container: {
@@ -6,29 +6,29 @@ export default StyleSheet.create({
   },
   photoContainer: {
     flex: 1,
-    position: 'absolute'
+    position: "absolute"
   },
   photo: {
-    width: Dimensions.get('window').width,
-    resizeMode: 'cover',
+    width: Dimensions.get("window").width,
+    resizeMode: "contain",
     flex: 1
   },
   contentContainer: {
-    backgroundColor: 'transparent'
+    backgroundColor: "transparent"
   },
   headerContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'transparent',
+    justifyContent: "flex-end",
+    backgroundColor: "transparent",
     padding: 10
   },
   title: {
-    color: '#FFF',
-    fontWeight: 'bold',
+    color: "#FFF",
+    fontWeight: "bold",
     fontSize: 20
   },
   subtitle: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 12
   }
 });
