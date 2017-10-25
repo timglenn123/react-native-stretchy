@@ -74,12 +74,7 @@ export default class StretchyHeader extends Component {
               }
             ]}
             source={this.props.image}
-          >
-            <LinearGradient
-              style={{ flex: 1, position: "absolute" }}
-              colors={this.props.gradientColors}
-            />
-          </Animated.Image>
+          />
         </View>
         <ScrollView
           showsVerticalScrollIndicator={false}

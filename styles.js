@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
   photo: {
     width: Dimensions.get("window").width,
-    resizeMode: "contain",
+    resizeMode: "cover",
     flex: 1
   },
   contentContainer: {
