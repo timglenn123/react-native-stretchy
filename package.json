@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hamidhadi/react-native-stretchy.git"
+    "url": "git+https://github.com/timglenn123/react-native-stretchy.git"
   },
   "keywords": [
     "react",
@@ -21,7 +21,7 @@
   "author": "Hamid Hadi <hamidhadi@live.com> (https://github.com/hamidhadi)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hamidhadi/react-native-stretchy/issues"
+    "url": "https://github.com/timglenn123/react-native-stretchy/issues"
   },
   "homepage": "https://github.com/hamidhadi/react-native-stretchy#readme",
   "dependencies": {
