@@ -1,23 +1,29 @@
 import React, { Component } from "react";
 import {
   View,
-  Text,
+  ImageBackground,
   Image,
   ScrollView,
   Dimensions,
   Animated
 } from "react-native";
+import PropTypes from "prop-types";
 import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource";
+import { LinearGradient } from "expo";
 import Styles from "./styles";
-import LinearGradient from "react-native-linear-gradient";
+
+const AnimatedImageBackground = Animated.createAnimatedComponent(
+  ImageBackground
+);
 
 export default class StretchyHeader extends Component {
   constructor(props) {
     super(props);
+
     this.wWidth = Dimensions.get("window").width;
     this.wHeight = Dimensions.get("window").height;
     this.state = {
-      scaleAnim: new Animated.Value(1),
+      scaleAnimation: new Animated.Value(1),
       ratio: null
     };
   }
@@ -35,37 +41,43 @@ export default class StretchyHeader extends Component {
 
   componentDidMount() {
     if (this.props.onScroll) {
-      this.state.scaleAnim.addListener(value => {
-        this.props.onScroll(value.value);
-      });
+      this.state.scaleAnimation.addListener(({ value }) =>
+        this.props.onScroll(value)
+      );
     }
   }
 
   render() {
+    const {
+      backgroundColor,
+      image,
+      foreground,
+      gradientColors,
+      gradientStart,
+      gradientEnd,
+      gradientLocations,
+      children
+    } = this.props;
     const { ratio } = this.state;
     const height = ratio > 1 ? this.wWidth / ratio : this.wWidth * ratio;
 
     return (
-      <View
-        style={[
-          Styles.container,
-          { backgroundColor: this.props.backgroundColor || "#FFF" }
-        ]}
-      >
+      <View style={[Styles.container, { backgroundColor }]}>
         <View style={[Styles.photoContainer, { height }]}>
-          <Animated.Image
+          <AnimatedImageBackground
+            source={image}
             style={[
               Styles.photo,
               {
                 transform: [
                   {
-                    translateY: this.state.scaleAnim.interpolate({
+                    translateY: this.state.scaleAnimation.interpolate({
                       inputRange: [-height, 0, height],
                       outputRange: [height / 2, 0, -height / 2]
                     })
                   },
                   {
-                    scale: this.state.scaleAnim.interpolate({
+                    scale: this.state.scaleAnimation.interpolate({
                       inputRange: [-height, 0, height],
                       outputRange: [2, 1, 1]
                     })
@@ -73,35 +85,59 @@ export default class StretchyHeader extends Component {
                 ]
               }
             ]}
-            source={this.props.image}
-          />
+          >
+            <LinearGradient
+              style={{ flex: 1 }}
+              colors={gradientColors}
+              start={gradientStart}
+              end={gradientEnd}
+              locations={gradientLocations}
+            />
+          </AnimatedImageBackground>
         </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={Styles.contentContainer}
           scrollEventThrottle={16}
           onScroll={Animated.event([
-            { nativeEvent: { contentOffset: { y: this.state.scaleAnim } } }
+            { nativeEvent: { contentOffset: { y: this.state.scaleAnimation } } }
           ])}
         >
-          <View style={[Styles.headerContainer, { height }]}>
-            <Text style={[Styles.title, this.props.titleStyle]}>
-              {this.props.title}
-            </Text>
-            <Text style={[Styles.subtitle, this.props.subtitleStyle]}>
-              {this.props.subtitle}
-            </Text>
+          <View style={[Styles.foregroundContainer, { height }]}>
+            {foreground}
           </View>
           <View
             style={{
-              backgroundColor: this.props.backgroundColor || "#FFF",
+              backgroundColor: backgroundColor,
               minHeight: this.wHeight - height
             }}
           >
-            {this.props.children}
+            {children}
           </View>
         </ScrollView>
       </View>
     );
   }
 }
+
+StretchyHeader.propTypes = {
+  backgroundColor: PropTypes.string,
+  image: PropTypes.node,
+  gradientColors: PropTypes.array,
+  gradientStart: PropTypes.object,
+  gradientEnd: PropTypes.object,
+  gradientLocations: PropTypes.arrayOf(PropTypes.number),
+  foreground: PropTypes.element,
+  onScroll: PropTypes.func
+};
+
+StretchyHeader.defaultProps = {
+  backgroundColor: "#FFF",
+  image: null,
+  gradientColors: [],
+  gradientStart: null,
+  gradientEnd: null,
+  gradientLocations: null,
+  foreground: null,
+  onScroll: null
+};
